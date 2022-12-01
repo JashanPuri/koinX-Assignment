@@ -1,8 +1,13 @@
 require("dotenv").config();
 const express = require("express");
 
+// routes
 const userRoutes = require("./routes/user");
 const transactionRoutes = require("./routes/transaction");
+
+// error handlers
+const notFoundMiddleware = require("./middleware/not-found"); // route not found
+const errorHandlerMiddleware = require("./middleware/error-handler"); // error handling
 
 const app = express(); // Initialising the app
 
@@ -21,12 +26,15 @@ app.use((req, res, next) => {
 
 app.use(express.json()); // JSON Parsing
 
+app.get("/", (req, res) => {
+    res.send("KoinX Internship Assignment");
+  });
+
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/transaction", transactionRoutes);
 
-app.get("/", (req, res) => {
-  res.send("KoinX Internship Assignment");
-});
+app.use(notFoundMiddleware);
+app.use(errorHandlerMiddleware);
 
 const port = process.env.PORT || 3000; // Defining port
 
