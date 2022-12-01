@@ -1,6 +1,8 @@
 require("dotenv").config();
 const express = require("express");
 
+const connectDB = require("./db/connect"); // connect to db
+
 // routes
 const userRoutes = require("./routes/user");
 const transactionRoutes = require("./routes/transaction");
@@ -27,8 +29,8 @@ app.use((req, res, next) => {
 app.use(express.json()); // JSON Parsing
 
 app.get("/", (req, res) => {
-    res.send("KoinX Internship Assignment");
-  });
+  res.send("KoinX Internship Assignment");
+});
 
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/transaction", transactionRoutes);
@@ -38,4 +40,18 @@ app.use(errorHandlerMiddleware);
 
 const port = process.env.PORT || 3000; // Defining port
 
-app.listen(port, console.log(`Listening at port ${port}`)); // server listining on specified port
+const start = async () => {
+  try {
+    const mongoURI = process.env.MONGO_URI;
+
+    // connect to mongo db
+    await connectDB(mongoURI);
+
+    // listen to requests
+    app.listen(port, console.log(`Listening at port ${port}`));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+start();
