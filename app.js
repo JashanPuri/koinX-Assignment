@@ -2,14 +2,16 @@ require("dotenv").config();
 const express = require("express");
 
 const userRoutes = require("./routes/user");
+const transactionRoutes = require("./routes/transaction")
 
 const app = express(); // Initialising the app
 
 app.use(express.json()); // JSON Parsing
 
 app.use("/api/v1/user", userRoutes)
+app.use("/api/v1/transaction", transactionRoutes)
 
-app.use("/", (req, res) => {
+app.get("/", (req, res) => {
   res.send("KoinX Internship Assignment");
 });
 
