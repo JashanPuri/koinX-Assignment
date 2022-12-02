@@ -38,13 +38,24 @@ const getTransactions = async (req, res, next) => {
 
     // Storing transactions in mongo DB
     const transactions = response.result.map((transaction) => {
-      transaction._id = transaction.hash;
-      return transaction;
+      const newTrans = {};
+      newTrans._id = transaction.hash;
+      newTrans.from = transaction.from;
+      newTrans.to = transaction.to;
+      newTrans.value = transaction.value;
+      newTrans.timeStamp = transaction.timeStamp;
+      newTrans.blockNumber = transaction.blockNumber;
+      newTrans.hash = transaction.hash;
+      newTrans.nonce = transaction.nonce;
+      newTrans.blockHash = transaction.blockHash;
+      newTrans.gasUsed = transaction.gasUsed;
+
+      return newTrans;
     });
 
-    const storedTransactions = await storeTransactions(transactions);
+    await storeTransactions(transactions);
 
-    res.json({ transactions: storedTransactions });
+    res.json({ transactions });
   } catch (error) {
     return next(error);
   }
