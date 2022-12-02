@@ -53,7 +53,7 @@ const getTransactions = async (req, res, next) => {
       return newTrans;
     });
 
-    await storeTransactions(transactions);
+    await storeTransactions(transactions, userAddress);
 
     res.json({ transactions });
   } catch (error) {
