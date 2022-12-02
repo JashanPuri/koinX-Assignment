@@ -11,6 +11,8 @@ const transactionRoutes = require("./routes/transaction");
 const notFoundMiddleware = require("./middleware/not-found"); // route not found
 const errorHandlerMiddleware = require("./middleware/error-handler"); // error handling
 
+const fetchAndUpdateEthereumPrice = require('./services/ethereum-price')
+
 const app = express(); // Initialising the app
 
 app.use((req, res, next) => {
@@ -48,7 +50,10 @@ const start = async () => {
     await connectDB(mongoURI);
 
     // listen to requests
-    app.listen(port, console.log(`Listening at port ${port}`));
+    app.listen(port, () => {
+      console.log(`Listening at port ${port}`);
+      fetchAndUpdateEthereumPrice()
+    });
   } catch (error) {
     console.log(error);
   }
