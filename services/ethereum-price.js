@@ -27,7 +27,7 @@ const fetchAndUpdatePriceHelper = async () => {
   console.log("Stored in DB");
 };
 
-const fetchAndUpdateEthereumPrice = async () => {
+const fetchAndUpdateEthereumPriceJob = async () => {
   await fetchAndUpdatePriceHelper();
   setIntervalAsync(async () => {
     try {
@@ -38,4 +38,5 @@ const fetchAndUpdateEthereumPrice = async () => {
   }, 600000);
 };
 
-module.exports = fetchAndUpdateEthereumPrice;
+
+module.exports = fetchAndUpdateEthereumPriceJob;

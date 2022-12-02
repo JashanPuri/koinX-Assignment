@@ -11,7 +11,7 @@ const transactionRoutes = require("./routes/transaction");
 const notFoundMiddleware = require("./middleware/not-found"); // route not found
 const errorHandlerMiddleware = require("./middleware/error-handler"); // error handling
 
-const fetchAndUpdateEthereumPrice = require('./services/ethereum-price')
+const fetchAndUpdateEthereumPriceJob = require('./services/ethereum-price')
 
 const app = express(); // Initialising the app
 
@@ -52,7 +52,7 @@ const start = async () => {
     // listen to requests
     app.listen(port, () => {
       console.log(`Listening at port ${port}`);
-      fetchAndUpdateEthereumPrice()
+      fetchAndUpdateEthereumPriceJob()
     });
   } catch (error) {
     console.log(error);
