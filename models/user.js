@@ -1,10 +1,15 @@
 const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema({
-  balance: {
-    type: Number,
-    default: 0,
-  }
-});
+const userSchema = new mongoose.Schema(
+  {
+    _id: String,
+    balance: {
+      type: Number,
+      default: 0,
+    },
+  },
+  { _id: false }
+);
 
-module.exports = mongoose.model("Transaction", transactionSchema);
+const User = mongoose.model("User", userSchema);
+module.exports = User;
