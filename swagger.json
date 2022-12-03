@@ -1,0 +1,236 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "KoinX Internship Assignment",
+    "description": "API for KoinX Internship Assignment",
+    "contact": {
+      "email": "jashanpuri7701@gmail.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://koinx-assignment-api.up.railway.app/api/v1",
+      "description": "API for KoinX Internship Assignment"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Transaction",
+      "description": "Transaction related calls"
+    },
+    {
+      "name": "User",
+      "description": "User related calls"
+    }
+  ],
+  "paths": {
+    "/transaction/user-transactions": {
+      "get": {
+        "tags": [
+          "Transaction"
+        ],
+        "summary": "returns transactions of a user",
+        "description": "By passing in the appropriate user address and options, the transactions related to the user are fetched and returned",
+        "operationId": "getTransactions",
+        "parameters": [
+          {
+            "name": "userAddress",
+            "in": "query",
+            "description": "pass a mandatory user address",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "startblock",
+            "in": "query",
+            "description": "the block to start searching for transactions",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          {
+            "name": "endblock",
+            "in": "query",
+            "description": "the last block to search for transactions",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "page number in case of pagination",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "number of transactions to be returned",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "search results matching criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Transaction"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      }
+    },
+    "/user/{userAddress}/balance": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "returns balance of a user",
+        "description": "By passing in the appropriate user address and options, the transactions related to the user are fetched and returned",
+        "operationId": "getUserBalance",
+        "parameters": [
+          {
+            "name": "userAddress",
+            "in": "path",
+            "description": "pass a mandatory user address",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "balance of user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Transaction": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "0x25f745fc71d9ddd0db561d06a023e6c654089861dc4625cdc81743afd3228982"
+          },
+          "from": {
+            "type": "string",
+            "example": "0xce94e5621a5f7068253c42558c147480f38b5e0d"
+          },
+          "to": {
+            "type": "string",
+            "example": "0xce94e5621a5f7068253c42558c147480f38b5e0d"
+          },
+          "timeStamp": {
+            "type": "string",
+            "example": "1650284543"
+          },
+          "blockNumber": {
+            "type": "string",
+            "example": "1650284543"
+          },
+          "hash": {
+            "type": "string",
+            "example": "0x25f745fc71d9ddd0db561d06a023e6c654089861dc4625cdc81743afd3228982"
+          },
+          "nonce": {
+            "type": "string",
+            "example": "1650284543"
+          },
+          "blockHash": {
+            "type": "string",
+            "example": "0x25f745fc71d9ddd0db561d06a023e6c654089861dc4625cdc81743afd3228982"
+          },
+          "gasUsed": {
+            "type": "string",
+            "example": "1650284543"
+          }
+        }
+      },
+      "inline_response_200": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "0xce94e5621a5f7068253c42558c147480f38b5e0d"
+          },
+          "balance": {
+            "type": "number",
+            "example": 244764311724765700
+          },
+          "etherPrice": {
+            "$ref": "#/components/schemas/inline_response_200_etherPrice"
+          }
+        }
+      },
+      "inline_response_200_etherPrice": {
+        "type": "object",
+        "properties": {
+          "price": {
+            "type": "number",
+            "example": 104124
+          },
+          "currency": {
+            "type": "string",
+            "example": "INR"
+          }
+        }
+      }
+    }
+  }
+}

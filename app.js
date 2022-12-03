@@ -1,7 +1,9 @@
 require("dotenv").config();
 const express = require("express");
+const swaggerUI = require("swagger-ui-express");
 
 const connectDB = require("./db/connect"); // connect to db
+const swaggerDocument = require("./swagger.json"); // api docs
 
 // routes
 const userRoutes = require("./routes/user");
@@ -33,6 +35,9 @@ app.use(express.json()); // JSON Parsing
 app.get("/", (req, res) => {
   res.send("KoinX Internship Assignment");
 });
+
+// api documentation
+app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/transaction", transactionRoutes);
